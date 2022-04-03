@@ -16,23 +16,40 @@ public class Main {
               Education.values()[new Random().nextInt(Education.values().length)])
       );
     }
+
     long minors = persons.stream()
             .filter(person -> person.getAge() < 18)
             .count();
     System.out.println("Количество несовершеннолетних - " + minors + " человек");
 
     List<String> conscripts = persons.stream()
+            .filter(man -> man.getSex().equals(Sex.MAN))
             .filter(age -> age.getAge() >= 18)
-            .filter(age -> age.getAge() <= 27)
+            .filter(age -> age.getAge() < 27)
             .map(Person::getFamily)
             .collect(Collectors.toList());
+    System.out.println(conscripts);
 
-    List<Person> workable = persons.stream()
+
+    List<Person> workableWomen = persons.stream()
             .filter(education -> education.getEducation().equals(Education.HIGHER))
+            .filter(man -> man.getSex().equals(Sex.WOMEN))
+            .filter(age -> age.getAge() >= 18)
+            .filter(age -> age.getAge() < 60)
+            .sorted(Comparator.comparing(Person::getFamily))
+            .collect(Collectors.toList());
+
+    List<Person> workableMan = persons.stream()
+            .filter(education -> education.getEducation().equals(Education.HIGHER))
+            .filter(man -> man.getSex().equals(Sex.MAN))
             .filter(age -> age.getAge() >= 18)
             .filter(age -> age.getAge() < 65)
             .sorted(Comparator.comparing(Person::getFamily))
             .collect(Collectors.toList());
+
+    ArrayList workable = new ArrayList<>();
+    workable.add(workableMan);
+    workable.add(workableWomen);
 
   }
 }
