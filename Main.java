@@ -30,26 +30,12 @@ public class Main {
             .collect(Collectors.toList());
     System.out.println(conscripts);
 
-
-    List<Person> workableWomen = persons.stream()
+    List<Person> workablePeople = persons.stream()
             .filter(education -> education.getEducation().equals(Education.HIGHER))
-            .filter(man -> man.getSex().equals(Sex.WOMEN))
             .filter(age -> age.getAge() >= 18)
-            .filter(age -> age.getAge() < 60)
+            .filter(man -> (man.getSex().equals(Sex.WOMEN) && man.getAge() < 60) ||
+                    (man.getSex().equals(Sex.MAN) && man.getAge() < 65))
             .sorted(Comparator.comparing(Person::getFamily))
             .collect(Collectors.toList());
-
-    List<Person> workableMan = persons.stream()
-            .filter(education -> education.getEducation().equals(Education.HIGHER))
-            .filter(man -> man.getSex().equals(Sex.MAN))
-            .filter(age -> age.getAge() >= 18)
-            .filter(age -> age.getAge() < 65)
-            .sorted(Comparator.comparing(Person::getFamily))
-            .collect(Collectors.toList());
-
-    ArrayList workable = new ArrayList<>();
-    workable.add(workableMan);
-    workable.add(workableWomen);
-
   }
 }
